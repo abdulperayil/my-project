@@ -26,13 +26,18 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build      
+      run: ./gradlew build
+      steps:
+  - uses: actions/checkout@v3
+    name: Check out code
 
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v4
-      with:
-        image: abdulperayil/myprivaterepository
-        registry: hub.docker.com
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+  - uses: mr-smithers-excellent/docker-build-push@v6
+    name: Build & push Docker image
+    with:
+      image: abdulperayil/myprivaterepository
+      tags: v1, latest
+      registry: hub.docker.com
+      dockerfile: Dockerfile.ci
+      username: ${{ secrets.DOCKER_USERNAME }}
+      password: ${{ secrets.DOCKER_PASSWORD }}
          
